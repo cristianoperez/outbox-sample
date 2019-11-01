@@ -19,7 +19,7 @@ class UserController(val userRepository: UserRepository,
     fun create(@RequestBody userCreateRequest: UserCreateRequest){
         val user = userCreateRequest.toUser()
         userRepository.save(user)
-        applicationEventPublisher.publishEvent(UserCreatedEvent(user.firstName, user.lastName, LocalDateTime.now()))
+        applicationEventPublisher.publishEvent(UserCreatedEvent(user.firstname, user.lastname, LocalDateTime.now(), user.id!!))
     }
 
 }

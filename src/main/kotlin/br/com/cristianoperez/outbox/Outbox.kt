@@ -7,9 +7,11 @@ import javax.persistence.Id
 
 @Entity
 data class Outbox(
-        val aggregateRoot: String,
-        val eventType: String,
-        val payload: String)
+        val aggregateid: Long,
+        val aggregatetype: String,
+        val type: String,
+        val payload: String,
+        val timestamp: Long)
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

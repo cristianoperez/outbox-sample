@@ -4,8 +4,7 @@ import br.com.cristianoperez.infra.ApplicationEvent
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
-import org.springframework.transaction.event.TransactionPhase
-import org.springframework.transaction.event.TransactionalEventListener
+import java.util.*
 
 @Component
 class OutboxEventListner(private val outboxRepository: OutboxRepository,
@@ -14,7 +13,13 @@ class OutboxEventListner(private val outboxRepository: OutboxRepository,
 
     @EventListener
     fun outboxListner(applicationEvent: ApplicationEvent) {
-        val outbox = Outbox(applicationEvent.aggregateRoot(), applicationEvent.javaClass.simpleName, objectMapper.writeValueAsString(applicationEvent))
+        val outbox = Outbox(
+                applicationEvent.id,
+                applicationEvent.aggregateType,
+                applicationEvent.javaClass.simpleName,
+                objectMapper.writeValueAsString(applicationEvent),
+                Date().time
+        )
         outboxRepository.save(outbox)
     }
 }
